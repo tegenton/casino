@@ -23,7 +23,7 @@ class Deck extends ArrayList<Card> {
         if (isEmpty()) {
             return null;
         }
-        return this.get(unShuffled--);
+        return this.get(--unShuffled);
     }
 
     public boolean isEmpty() {

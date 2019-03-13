@@ -1,5 +1,5 @@
 public class Test {
-    public static void main() {
-        Game game = new Game();
+    public static void main(String[] args) {
+        new Game(10, Game.games.BLACKJACK);
     }
 }
