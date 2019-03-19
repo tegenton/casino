@@ -41,26 +41,30 @@ public class Game {
             }
             else {
                 // TODO: user input
-
-            }
-            System.out.print("Current Hand: ");
-            hand = new ArrayList<>();
-            hit(2);
-            for (Card card : this.hand) {
-                System.out.print(card.getCardRank() + " ");
-            }
-            System.out.println(" = " + sum());
-            while (sum() <= 21) {
-
-            }
-            if (sum() > 21) {
-                System.out.println("You busted");
+                startBlackJack();
             }
         }
         if (balance <= 0)
             System.out.println("You have no money");
         else
             System.out.println("Final balance: $" + balance);
+    }
+
+    private void startBlackJack() {
+        boolean cont = true;
+        while (cont) {
+            System.out.print("Current hand: ");
+            hand = new ArrayList<>();
+            hit(this.hand, 2);
+            printHand(this.hand, false);
+            System.out.println(" = " + sum(this.hand, false));
+
+            System.out.print("Dealer's hand: ");
+            dealer = new ArrayList<>();
+            hit(this.dealer, 2);
+            printHand(this.dealer, true);
+            System.out.println(" = " + sum(this.dealer, true));
+        }
     }
 
     private void poker() { // TODO
@@ -71,7 +75,7 @@ public class Game {
         System.out.println("Not yet implemented");
     }
 
-    private void hit(int i) {
+    private void hit(ArrayList<Card> whichHand, int i) {
         Card temp;
         while (i-- > 0) {
             temp = deck.deal();
@@ -79,18 +83,23 @@ public class Game {
                 deck.shuffle();
                 temp = deck.deal();
             }
-            hand.add(temp);
+            whichHand.add(temp);
         }
     }
 
-    private int sum() {
+    private int sum(ArrayList<Card> whichHand, boolean dealer) {
         int sum = 0;
         int aces = 0;
-        for (Card card : this.hand) {
+        for (Card card : whichHand) {
             if (card.getCardRank() == Card.ranks.ACE)
                 aces++;
             else
                 sum += card.getPointValue();
+        }
+        if (dealer) {
+            sum -= whichHand.get(0).getPointValue();
+            if (whichHand.get(0).getCardRank() == Card.ranks.ACE)
+                sum -= 10;
         }
         while (aces-- > 0)
             if (sum <= 10 && sum + aces + 10 < 21)
@@ -98,5 +107,14 @@ public class Game {
             else
                 sum++;
         return sum;
+    }
+
+    private void printHand(ArrayList<Card> whichHand, boolean dealer) {
+        if (dealer) {
+            System.out.print("HIDDEN, ");
+        }
+        for (int i = (dealer) ? 1 : 0; i < whichHand.size(); i++) {
+            System.out.print(whichHand.get(i).getCardRank() + ((i != whichHand.size() - 1) ? ", " : ""));
+        }
     }
 }
