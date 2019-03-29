@@ -91,7 +91,7 @@ public class Game {
                     break;
                 case 3:
                     do {
-                        System.out.println("How much more would you like to bet? you can add up to $" + bet);
+                        System.out.println("How much more would you like to bet? You can add up to $" + bet);
                         input = (int) getInput(Integer.class);
                     } while (input > bet);
                     this.balance -= input;
